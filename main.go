@@ -8,12 +8,15 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/michzuerch/CheckInBoardServer/config"
+
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
+	fmt.Printf("Test String len: %d\n", config.StringLength("Hello"))
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatalf("Some error occured. Err: %s", err)
