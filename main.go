@@ -22,19 +22,6 @@ func main() {
 		log.Fatalf("Some error occured. Err: %s", err)
 	}
 
-	getEnv := func(key string) {
-		val, ok := os.LookupEnv(key)
-		if !ok {
-			fmt.Printf("%s not set\n", key)
-		} else {
-			fmt.Printf("%s=%s\n", key, val)
-		}
-	}
-	//getEnv("EDITOR")
-	getEnv("SHELL")
-	//var HTTP_PORT string = getEnv("HTTP_PORT")
-
-	//fmt.Println("HTTP_PORT from .env: %v", HTTP_PORT)
 	e := echo.New()
 
 	e.Use(middleware.Logger())
@@ -50,7 +37,7 @@ func main() {
 		return c.JSON(http.StatusOK, struct{ Status string }{Status: "OK"})
 	})
 
-	httpPort := os.Getenv("HTTP_PORT")
+	var httpPort string = os.Getenv("HTTP_PORT")
 	if httpPort == "" {
 		httpPort = "8080"
 	}

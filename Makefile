@@ -26,5 +26,10 @@ run-docker:
 test-models:
 	go test ./models
 
+
+clean:
+	docker stop checkinboard-server
+	docker container rm checkinboard-server
+
 all: build
 
