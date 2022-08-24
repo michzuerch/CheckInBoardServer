@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"github.com/michzuerch/CheckInBoardServer/config"
+	"github.com/michzuerch/CheckInBoardServer/util"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -16,6 +17,7 @@ import (
 )
 
 func main() {
+	util.CheckDatabaseAccess()
 	fmt.Printf("Test String len: %d\n", config.StringLength("Hello"))
 	err := godotenv.Load(".env")
 	if err != nil {
