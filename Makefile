@@ -1,7 +1,13 @@
+ifneq (,$(wildcard ./.env))
+    include .env
+    export
+endif
+
 build:
+	@echo ${HTTP_PORT}
 	@echo "Start building..."
 	go mod tidy
-	go generate
+#	go generate
 	go build main.go
 	@echo  "Building done."
 
@@ -15,7 +21,7 @@ run:
 	go run main.go
 
 run-docker:
-	docker run --publish 8080:8080 --name checkinboard-server checkinboard-server
+	docker run --publish ${HTTP_PORT}:${HTTP_PORT} --name checkinboard-server checkinboard-server
 
 test-models:
 	go test ./models

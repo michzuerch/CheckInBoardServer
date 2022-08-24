@@ -19,9 +19,6 @@ func main() {
 		log.Fatalf("Some error occured. Err: %s", err)
 	}
 
-	val := os.Getenv("HTTP_PORT")
-	fmt.Println(val)
-
 	getEnv := func(key string) {
 		val, ok := os.LookupEnv(key)
 		if !ok {
@@ -30,7 +27,7 @@ func main() {
 			fmt.Printf("%s=%s\n", key, val)
 		}
 	}
-	getEnv("EDITOR")
+	//getEnv("EDITOR")
 	getEnv("SHELL")
 	//var HTTP_PORT string = getEnv("HTTP_PORT")
 
