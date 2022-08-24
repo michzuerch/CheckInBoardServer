@@ -1,0 +1,6 @@
+output   = "models"
+wipe     = true
+no-tests = false
+
+[sqlite3]
+    dbname = "CheckInBoard"

@@ -1,0 +1,5 @@
+development:
+    dialect: postgres
+    datasource: dbname=CheckInBoard user=michzuerch password=lx0lc33a sslmode=disable
+    dir: migrations/postgresql
+    table: migrations
