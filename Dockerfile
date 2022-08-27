@@ -1,19 +1,9 @@
-# syntax=docker/dockerfile:1
-
-FROM golang:1.19-alpine
-
+FROM golang:alpine as builder
+RUN mkdir /build 
+ADD . /build/
+WORKDIR /build 
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main .
+FROM scratch
+COPY --from=builder /build/main /app/
 WORKDIR /app
-
-COPY go.mod ./
-COPY go.sum ./
-RUN go mod download
-
-COPY .env ./
-COPY *.go ./
-
-RUN go build -o /checkinboard-server
-
-EXPOSE ${HTTP_PORT}
-
-CMD [ "/checkinboard-server" ]
-
+CMD ["./main"]

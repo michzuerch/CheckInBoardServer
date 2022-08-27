@@ -1,6 +1,6 @@
 output   = "models"
 wipe     = true
-no-tests = false
+no-tests = true
 
 [auto-columns]
   created = "createdAt"
