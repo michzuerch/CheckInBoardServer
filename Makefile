@@ -1,15 +1,27 @@
+BINARY_NAME=main.out
+
 ifneq (,$(wildcard ./.env))
     include .env
     export
 endif
 
+all: build test
+
 build:
-	@echo ${HTTP_PORT}
+	@echo .env-File Building for HTTP_PORT ${HTTP_PORT}
 	@echo "Start building..."
 	go mod tidy
-#	go generate
+	#go generate
 	go build main.go
 	@echo  "Building done."
+
+test:
+	@echo "Testing..."
+	#go test -v ./models
+
+lint:
+	@echo "Linting..."
+	golangci-lint run --enable-all
 
 build-docker:
 	@echo "Start build docker image..."
@@ -23,13 +35,8 @@ run:
 run-docker: clean build-docker
 	docker run --publish ${HTTP_PORT}:${HTTP_PORT} --name checkinboard-server checkinboard-server
 
-test-models:
-	go test ./models
-
-
 clean:
 	docker stop checkinboard-server
 	docker container rm checkinboard-server
-
-all: build
-
+	go clean
+	rm --force main
