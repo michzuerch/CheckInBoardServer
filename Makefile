@@ -20,7 +20,7 @@ build-docker:
 run:
 	go run main.go
 
-run-docker:
+run-docker: clean build-docker
 	docker run --publish ${HTTP_PORT}:${HTTP_PORT} --name checkinboard-server checkinboard-server
 
 test-models:
