@@ -19,6 +19,10 @@ test:
 	@echo "Testing..."
 	#go test -v ./models
 
+cover:
+	go test -coverprofile cp.out
+	go tool cover -html=cp.out
+
 lint:
 	@echo "Linting..."
 	golangci-lint run --enable-all
