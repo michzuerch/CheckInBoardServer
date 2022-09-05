@@ -26,23 +26,24 @@ all: build ## Build all
 
 dep: ## Downloag go dependencies
 	$(info Checking and getting dependencies)
-	@go mod download
+	go mod download
 
 lint: ## Linting
 	$(info Linting with golangci-list)
-	@golangci-lint run --enable-all
+	golangci-lint run --enable-all
 
 install-golangci-lint: ## Install golangci-lint
 	$(info Install golangci-lint)
-	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.49.0
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.49.0
 
 vet: ## go vet
 	$(info Report likely misstaken packages)
-	@go vet ${PKG_LIST}
+	go vet ${PKG_LIST}
 
-build: ## go build
-	$(info go build)
-	@go build -o ${BINARY_NAME}
+build: ## go generate, go build
+	$(info go generate, go build)
+	go generate
+	go build -o ${BINARY_NAME}
 
 run: ## Run the application on local machine
 	$(info Run main on local machine)
@@ -52,31 +53,54 @@ run: ## Run the application on local machine
 
 test: ## Testing
 	$(info Unit tests, go test)
-	@echo "Testing..."
-	@go test -short ${PKG_LIST}
+	go test -short ${PKG_LIST}
 
 test-coverage: ## Test coverage
 	$(info Coverage)
-	@go test -short -coverprofile cover.out -covermode=atomic ${PKG_LIST}
+	go test -short -coverprofile cover.out -covermode=atomic ${PKG_LIST}
 
 ##@ Docker
 
-build-docker: ## Build the docker image
+docker-build: ## Build the docker image
 	$(info Build the docker image)
 	@echo "Start build docker image..."
-	docker build --tag checkinboard-server .
+	docker build --no-cache --tag checkinboard-server .
 	docker image tag checkinboard-server:latest checkinboard-server:v1.0
 	@echo "Docker images is ready."
 
-run-docker: clean-docker build-docker ## Run the application as docker container
+docker-run: ## Run the application as docker container
 	$(info Start a docker container with main.go)
 	@echo "Docker container on port:" ${HTTP_PORT}
 	docker run --publish ${HTTP_PORT}:${HTTP_PORT} --name checkinboard-server checkinboard-server
 
-clean-docker: ## Stop the running docker container and remove the container
+docker-clean: ## Stop the running docker container and remove the container
 	$(info docker Stop, docker container rm)
 	docker stop checkinboard-server
 	docker container rm checkinboard-server
+
+##@ Database
+
+database-start: ## Start postgres with docker-compose
+	$(info Start the database)
+	docker-compose -p postgres -f ./Database/docker-compose.yml up -d
+
+database-stop: ## Stop postgres with docker-compose
+	$(info Stop the database)
+	docker-compose -p postgres -f ./Database/docker-compose.yml down
+
+##@ sql-migrate
+
+install-sql-migrate: ## Install sql-migrate
+	$(info Install sql-migrate)
+	go install github.com/rubenv/sql-migrate/...@latest
+
+sql-migrate-up: ## sql-migrate up
+	$(info sql-migrate up)
+	sql-migrate up
+
+sql-migrate-down: ## sql-migrate down
+	$(info sql-migrate down)
+	sql-migrate down
 
 ##@ Cleanup
 
