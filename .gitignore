@@ -44,3 +44,5 @@ operations/variable-scripts/variable.json
 
 # project specific
 Database/db-data/
+
+dist/
