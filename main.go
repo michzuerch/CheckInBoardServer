@@ -1,6 +1,6 @@
 package main
 
-go:generate sqlboiler psql
+//go:generate sqlboiler psql
 
 import (
 	"fmt"
