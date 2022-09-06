@@ -1,5 +1,11 @@
 development:
-    dialect: postgres
-    datasource: dbname=CheckInBoard user=michzuerch password=lx0lc33a sslmode=disable
-    dir: migrations/postgresql
-    table: migrations
+  dialect: sqlite3
+  datasource: CheckInBoard-testing.db
+  dir: migrations/sqlite
+  table: migrations
+
+production:
+  dialect: postgres
+  datasource: dbname=CheckInBoard user=michzuerch password=lx0lc33a sslmode=disable
+  dir: migrations/postgres
+  table: migrations

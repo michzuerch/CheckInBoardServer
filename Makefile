@@ -3,6 +3,10 @@ SHELL:=/bin/zsh
 
 PROJECT_NAME := "CheckInBoardServer"
 BINARY_NAME := main
+
+# "development" for sqlite, "production" for postgres
+SQL_MIGRATE_ENV := "production"
+
 PKG := "github.com/michzuerch/$(PROJECT_NAME)"
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
 GO_FILES := $(shell find . -name '*.go' | grep -v /vendor/ | grep -v _test.go)
@@ -96,11 +100,11 @@ install-sql-migrate: ## Install sql-migrate
 
 sql-migrate-up: ## sql-migrate up
 	$(info sql-migrate up)
-	sql-migrate up
+	sql-migrate up -env=${SQL_MIGRATE_ENV}
 
 sql-migrate-down: ## sql-migrate down
 	$(info sql-migrate down)
-	sql-migrate down
+	sql-migrate down -env=${SQL_MIGRATE_ENV}
 
 ##@ Cleanup
 
