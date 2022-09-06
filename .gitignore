@@ -43,6 +43,5 @@ operations/variable-scripts/variable.json
 .sentinel
 
 # project specific
-Database/db-data/**
-
+Database/db-data/
 dist/
