@@ -1,14 +1,17 @@
-version: '3'
+version: '3.8'
+
+volumes:
+  checkinboard-db:
 services:
   database:
-    image: 'postgres:latest'
+    image: 'postgres:14-alpine'
     # user: "${UID}:${GID}"
     ports:
       - 5432:5432
     env_file:
       - .env # The name of your environment file (the one at the repository root)
     volumes:
-      - ./db-data/:/var/lib/postgresql/data/
+      - checkinboard-db:/var/lib/postgresql/data/
         #  checkinboard-server:
         #image: 'checkinboard-server'
         #ports:
