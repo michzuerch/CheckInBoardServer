@@ -1,6 +1,6 @@
 package main
 
-//go:generate sqlboiler --wipe sqlite3
+//go:generate sqlboiler sqlite3 --wipe -c sqlboiler-Sqlite3.toml
 
 import (
 	"fmt"
@@ -9,9 +9,9 @@ import (
 	"os"
 
 	//"github.com/michzuerch/CheckInBoardServer/util"
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/michzuerch/CheckInBoardServer/config"
 	"github.com/michzuerch/CheckInBoardServer/hello"
-  _ "github.com/mattn/go-sqlite3"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"

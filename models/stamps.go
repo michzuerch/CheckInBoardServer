@@ -24,12 +24,12 @@ import (
 
 // Stamp is an object representing the database table.
 type Stamp struct {
-	ID        null.String `boil:"id" json:"id,omitempty" toml:"id" yaml:"id,omitempty"`
-	CreatedAt null.String `boil:"createdAt" json:"createdAt,omitempty" toml:"createdAt" yaml:"createdAt,omitempty"`
-	UpdatedAt null.String `boil:"updatedAt" json:"updatedAt,omitempty" toml:"updatedAt" yaml:"updatedAt,omitempty"`
-	PersonID  null.Int64  `boil:"person_id" json:"person_id,omitempty" toml:"person_id" yaml:"person_id,omitempty"`
-	Checkin   bool        `boil:"checkin" json:"checkin" toml:"checkin" yaml:"checkin"`
-	Stamp     string      `boil:"stamp" json:"stamp" toml:"stamp" yaml:"stamp"`
+	ID        int64      `boil:"id" json:"id" toml:"id" yaml:"id"`
+	CreatedAt null.Time  `boil:"createdAt" json:"createdAt,omitempty" toml:"createdAt" yaml:"createdAt,omitempty"`
+	UpdatedAt null.Time  `boil:"updatedAt" json:"updatedAt,omitempty" toml:"updatedAt" yaml:"updatedAt,omitempty"`
+	PersonID  null.Int64 `boil:"person_id" json:"person_id,omitempty" toml:"person_id" yaml:"person_id,omitempty"`
+	Checkin   bool       `boil:"checkin" json:"checkin" toml:"checkin" yaml:"checkin"`
+	Stamp     time.Time  `boil:"stamp" json:"stamp" toml:"stamp" yaml:"stamp"`
 
 	R *stampR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L stampL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -116,20 +116,41 @@ func (w whereHelperbool) LTE(x bool) qm.QueryMod { return qmhelper.Where(w.field
 func (w whereHelperbool) GT(x bool) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
 func (w whereHelperbool) GTE(x bool) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
 
+type whereHelpertime_Time struct{ field string }
+
+func (w whereHelpertime_Time) EQ(x time.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.EQ, x)
+}
+func (w whereHelpertime_Time) NEQ(x time.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.NEQ, x)
+}
+func (w whereHelpertime_Time) LT(x time.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LT, x)
+}
+func (w whereHelpertime_Time) LTE(x time.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LTE, x)
+}
+func (w whereHelpertime_Time) GT(x time.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GT, x)
+}
+func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GTE, x)
+}
+
 var StampWhere = struct {
-	ID        whereHelpernull_String
-	CreatedAt whereHelpernull_String
-	UpdatedAt whereHelpernull_String
+	ID        whereHelperint64
+	CreatedAt whereHelpernull_Time
+	UpdatedAt whereHelpernull_Time
 	PersonID  whereHelpernull_Int64
 	Checkin   whereHelperbool
-	Stamp     whereHelperstring
+	Stamp     whereHelpertime_Time
 }{
-	ID:        whereHelpernull_String{field: "\"stamps\".\"id\""},
-	CreatedAt: whereHelpernull_String{field: "\"stamps\".\"createdAt\""},
-	UpdatedAt: whereHelpernull_String{field: "\"stamps\".\"updatedAt\""},
+	ID:        whereHelperint64{field: "\"stamps\".\"id\""},
+	CreatedAt: whereHelpernull_Time{field: "\"stamps\".\"createdAt\""},
+	UpdatedAt: whereHelpernull_Time{field: "\"stamps\".\"updatedAt\""},
 	PersonID:  whereHelpernull_Int64{field: "\"stamps\".\"person_id\""},
 	Checkin:   whereHelperbool{field: "\"stamps\".\"checkin\""},
-	Stamp:     whereHelperstring{field: "\"stamps\".\"stamp\""},
+	Stamp:     whereHelpertime_Time{field: "\"stamps\".\"stamp\""},
 }
 
 // StampRels is where relationship names are stored.
@@ -593,8 +614,8 @@ func (o *Stamp) SetPerson(ctx context.Context, exec boil.ContextExecutor, insert
 
 	updateQuery := fmt.Sprintf(
 		"UPDATE \"stamps\" SET %s WHERE %s",
-		strmangle.SetParamNames("\"", "\"", 0, []string{"person_id"}),
-		strmangle.WhereClause("\"", "\"", 0, stampPrimaryKeyColumns),
+		strmangle.SetParamNames("\"", "\"", 1, []string{"person_id"}),
+		strmangle.WhereClause("\"", "\"", 2, stampPrimaryKeyColumns),
 	)
 	values := []interface{}{related.ID, o.ID}
 
@@ -673,7 +694,7 @@ func Stamps(mods ...qm.QueryMod) stampQuery {
 
 // FindStamp retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindStamp(ctx context.Context, exec boil.ContextExecutor, iD null.String, selectCols ...string) (*Stamp, error) {
+func FindStamp(ctx context.Context, exec boil.ContextExecutor, iD int64, selectCols ...string) (*Stamp, error) {
 	stampObj := &Stamp{}
 
 	sel := "*"
@@ -681,7 +702,7 @@ func FindStamp(ctx context.Context, exec boil.ContextExecutor, iD null.String, s
 		sel = strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, selectCols), ",")
 	}
 	query := fmt.Sprintf(
-		"select %s from \"stamps\" where \"id\"=?", sel,
+		"select %s from \"stamps\" where \"id\"=$1", sel,
 	)
 
 	q := queries.Raw(query, iD)
@@ -823,8 +844,8 @@ func (o *Stamp) Update(ctx context.Context, exec boil.ContextExecutor, columns b
 		}
 
 		cache.query = fmt.Sprintf("UPDATE \"stamps\" SET %s WHERE %s",
-			strmangle.SetParamNames("\"", "\"", 0, wl),
-			strmangle.WhereClause("\"", "\"", 0, stampPrimaryKeyColumns),
+			strmangle.SetParamNames("\"", "\"", 1, wl),
+			strmangle.WhereClause("\"", "\"", len(wl)+1, stampPrimaryKeyColumns),
 		)
 		cache.valueMapping, err = queries.BindMapping(stampType, stampMapping, append(wl, stampPrimaryKeyColumns...))
 		if err != nil {
@@ -904,8 +925,8 @@ func (o StampSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, co
 	}
 
 	sql := fmt.Sprintf("UPDATE \"stamps\" SET %s WHERE %s",
-		strmangle.SetParamNames("\"", "\"", 0, colNames),
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, stampPrimaryKeyColumns, len(o)))
+		strmangle.SetParamNames("\"", "\"", 1, colNames),
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), len(colNames)+1, stampPrimaryKeyColumns, len(o)))
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -986,6 +1007,7 @@ func (o *Stamp) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOnC
 			stampColumnsWithoutDefault,
 			nzDefaults,
 		)
+
 		update := updateColumns.UpdateColumnSet(
 			stampAllColumns,
 			stampPrimaryKeyColumns,
@@ -1000,7 +1022,7 @@ func (o *Stamp) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOnC
 			conflict = make([]string, len(stampPrimaryKeyColumns))
 			copy(conflict, stampPrimaryKeyColumns)
 		}
-		cache.query = buildUpsertQuerySQLite(dialect, "\"stamps\"", updateOnConflict, ret, update, conflict, insert)
+		cache.query = buildUpsertQueryPostgres(dialect, "\"stamps\"", updateOnConflict, ret, update, conflict, insert)
 
 		cache.valueMapping, err = queries.BindMapping(stampType, stampMapping, insert)
 		if err != nil {
@@ -1059,7 +1081,7 @@ func (o *Stamp) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, e
 	}
 
 	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), stampPrimaryKeyMapping)
-	sql := "DELETE FROM \"stamps\" WHERE \"id\"=?"
+	sql := "DELETE FROM \"stamps\" WHERE \"id\"=$1"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1125,7 +1147,7 @@ func (o StampSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (i
 	}
 
 	sql := "DELETE FROM \"stamps\" WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, stampPrimaryKeyColumns, len(o))
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, stampPrimaryKeyColumns, len(o))
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1180,7 +1202,7 @@ func (o *StampSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) e
 	}
 
 	sql := "SELECT \"stamps\".* FROM \"stamps\" WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, stampPrimaryKeyColumns, len(*o))
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, stampPrimaryKeyColumns, len(*o))
 
 	q := queries.Raw(sql, args...)
 
@@ -1195,9 +1217,9 @@ func (o *StampSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) e
 }
 
 // StampExists checks if the Stamp row exists.
-func StampExists(ctx context.Context, exec boil.ContextExecutor, iD null.String) (bool, error) {
+func StampExists(ctx context.Context, exec boil.ContextExecutor, iD int64) (bool, error) {
 	var exists bool
-	sql := "select exists(select 1 from \"stamps\" where \"id\"=? limit 1)"
+	sql := "select exists(select 1 from \"stamps\" where \"id\"=$1 limit 1)"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
