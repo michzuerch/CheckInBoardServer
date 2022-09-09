@@ -1,6 +1,6 @@
 package main
 
-//go:generate sqlboiler psql
+//go:generate sqlboiler --wipe sqlite3
 
 import (
 	"fmt"
@@ -11,6 +11,7 @@ import (
 	//"github.com/michzuerch/CheckInBoardServer/util"
 	"github.com/michzuerch/CheckInBoardServer/config"
 	"github.com/michzuerch/CheckInBoardServer/hello"
+  _ "github.com/mattn/go-sqlite3"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"

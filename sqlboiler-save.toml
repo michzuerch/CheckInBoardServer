@@ -1,0 +1,16 @@
+output   = "models"
+wipe     = true
+no-tests = true
+
+[auto-columns]
+  created = "createdAt"
+  updated = "updatedAt"
+
+[psql]
+  dbname = "CheckInBoard"
+  host="localhost"
+  user="michzuerch"
+  pass="lx0lc33a"
+  sslmode="disable"
+  schema="public"
+  blacklist = ["migrations"]

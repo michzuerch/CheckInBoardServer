@@ -5,7 +5,7 @@ PROJECT_NAME := "CheckInBoardServer"
 BINARY_NAME := main
 
 # "development" for sqlite, "production" for postgres
-SQL_MIGRATE_ENV := "production"
+SQL_MIGRATE_ENV := "development"
 
 PKG := "github.com/michzuerch/$(PROJECT_NAME)"
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)

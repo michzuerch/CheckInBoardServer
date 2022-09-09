@@ -1,16 +1,10 @@
-output   = "models"
-wipe     = true
+output = "models"
+wipe = true
 no-tests = true
 
 [auto-columns]
-  created = "createdAt"
-  updated = "updatedAt"
+created = "createdAt"
+updated = "updatedAt"
 
-[psql]
-  dbname = "CheckInBoard"
-  host="localhost"
-  user="michzuerch"
-  pass="lx0lc33a"
-  sslmode="disable"
-  schema="public"
-  blacklist = ["migrations"]
+[sqlite3]
+dbname = "CheckInBoard-testing.db"
