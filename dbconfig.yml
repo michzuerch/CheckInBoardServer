@@ -1,11 +1,17 @@
-development:
+sqlite3:
   dialect: sqlite3
-  datasource: CheckInBoard-testing.db
+  datasource: checkinboard-testing.db
   dir: migrations/sqlite
   table: migrations
 
-production:
+postgres:
   dialect: postgres
-  datasource: dbname=CheckInBoard user=michzuerch password=lx0lc33a sslmode=disable
+  datasource: dbname=checkinboard user=michzuerch password=lx0lc33a sslmode=disable
   dir: migrations/postgres
+  table: migrations
+
+mysql:
+  dialect: mysql
+  datasource: michzuerch:lx0lc33a@tcp(localhost:3306)/checkinboard?parseTime=true
+  dir: migrations/mysql
   table: migrations

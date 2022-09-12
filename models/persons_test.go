@@ -896,7 +896,7 @@ func testPersonsSelect(t *testing.T) {
 }
 
 var (
-	personDBTypes = map[string]string{`ID`: `bigint`, `CreatedAt`: `timestamp without time zone`, `UpdatedAt`: `timestamp without time zone`, `Firstname`: `character varying`, `Lastname`: `character varying`, `Birthdate`: `date`, `Emailaddress`: `character varying`}
+	personDBTypes = map[string]string{`ID`: `BIGSERIAL`, `CreatedAt`: `TIMESTAMP`, `UpdatedAt`: `TIMESTAMP`, `Firstname`: `VARCHAR(50)`, `Lastname`: `VARCHAR(50)`, `Birthdate`: `DATE`, `Emailaddress`: `VARCHAR(100)`}
 	_             = bytes.MinRead
 )
 
@@ -1013,7 +1013,6 @@ func testPersonsSliceUpdateAll(t *testing.T) {
 
 func testPersonsUpsert(t *testing.T) {
 	t.Parallel()
-
 	if len(personAllColumns) == len(personPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}

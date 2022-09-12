@@ -1,6 +1,6 @@
 package main
 
-//go:generate sqlboiler sqlite3 --wipe -c sqlboiler-Sqlite3.toml
+//go:generate sqlboiler sqlite3 --wipe
 
 import (
 	"fmt"

@@ -24,9 +24,9 @@ import (
 
 // Person is an object representing the database table.
 type Person struct {
-	ID           int64       `boil:"id" json:"id" toml:"id" yaml:"id"`
-	CreatedAt    null.Time   `boil:"createdAt" json:"createdAt,omitempty" toml:"createdAt" yaml:"createdAt,omitempty"`
-	UpdatedAt    null.Time   `boil:"updatedAt" json:"updatedAt,omitempty" toml:"updatedAt" yaml:"updatedAt,omitempty"`
+	ID           null.String `boil:"id" json:"id,omitempty" toml:"id" yaml:"id,omitempty"`
+	CreatedAt    null.String `boil:"createdAt" json:"createdAt,omitempty" toml:"createdAt" yaml:"createdAt,omitempty"`
+	UpdatedAt    null.String `boil:"updatedAt" json:"updatedAt,omitempty" toml:"updatedAt" yaml:"updatedAt,omitempty"`
 	Firstname    string      `boil:"firstname" json:"firstname" toml:"firstname" yaml:"firstname"`
 	Lastname     string      `boil:"lastname" json:"lastname" toml:"lastname" yaml:"lastname"`
 	Birthdate    null.Time   `boil:"birthdate" json:"birthdate,omitempty" toml:"birthdate" yaml:"birthdate,omitempty"`
@@ -74,76 +74,6 @@ var PersonTableColumns = struct {
 
 // Generated where
 
-type whereHelperint64 struct{ field string }
-
-func (w whereHelperint64) EQ(x int64) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperint64) NEQ(x int64) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperint64) LT(x int64) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperint64) LTE(x int64) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperint64) GT(x int64) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperint64) GTE(x int64) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperint64) IN(slice []int64) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
-}
-func (w whereHelperint64) NIN(slice []int64) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
-}
-
-type whereHelpernull_Time struct{ field string }
-
-func (w whereHelpernull_Time) EQ(x null.Time) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, false, x)
-}
-func (w whereHelpernull_Time) NEQ(x null.Time) qm.QueryMod {
-	return qmhelper.WhereNullEQ(w.field, true, x)
-}
-func (w whereHelpernull_Time) LT(x null.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LT, x)
-}
-func (w whereHelpernull_Time) LTE(x null.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.LTE, x)
-}
-func (w whereHelpernull_Time) GT(x null.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GT, x)
-}
-func (w whereHelpernull_Time) GTE(x null.Time) qm.QueryMod {
-	return qmhelper.Where(w.field, qmhelper.GTE, x)
-}
-
-func (w whereHelpernull_Time) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
-func (w whereHelpernull_Time) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
-
-type whereHelperstring struct{ field string }
-
-func (w whereHelperstring) EQ(x string) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperstring) NEQ(x string) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperstring) LT(x string) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperstring) LTE(x string) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperstring) GT(x string) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperstring) GTE(x string) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperstring) IN(slice []string) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
-}
-func (w whereHelperstring) NIN(slice []string) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
-}
-
 type whereHelpernull_String struct{ field string }
 
 func (w whereHelpernull_String) EQ(x null.String) qm.QueryMod {
@@ -182,18 +112,65 @@ func (w whereHelpernull_String) NIN(slice []string) qm.QueryMod {
 func (w whereHelpernull_String) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
 func (w whereHelpernull_String) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
 
+type whereHelperstring struct{ field string }
+
+func (w whereHelperstring) EQ(x string) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
+func (w whereHelperstring) NEQ(x string) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
+func (w whereHelperstring) LT(x string) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
+func (w whereHelperstring) LTE(x string) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
+func (w whereHelperstring) GT(x string) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
+func (w whereHelperstring) GTE(x string) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
+func (w whereHelperstring) IN(slice []string) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
+}
+func (w whereHelperstring) NIN(slice []string) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
+}
+
+type whereHelpernull_Time struct{ field string }
+
+func (w whereHelpernull_Time) EQ(x null.Time) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, false, x)
+}
+func (w whereHelpernull_Time) NEQ(x null.Time) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, true, x)
+}
+func (w whereHelpernull_Time) LT(x null.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LT, x)
+}
+func (w whereHelpernull_Time) LTE(x null.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LTE, x)
+}
+func (w whereHelpernull_Time) GT(x null.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GT, x)
+}
+func (w whereHelpernull_Time) GTE(x null.Time) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GTE, x)
+}
+
+func (w whereHelpernull_Time) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
+func (w whereHelpernull_Time) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
+
 var PersonWhere = struct {
-	ID           whereHelperint64
-	CreatedAt    whereHelpernull_Time
-	UpdatedAt    whereHelpernull_Time
+	ID           whereHelpernull_String
+	CreatedAt    whereHelpernull_String
+	UpdatedAt    whereHelpernull_String
 	Firstname    whereHelperstring
 	Lastname     whereHelperstring
 	Birthdate    whereHelpernull_Time
 	Emailaddress whereHelpernull_String
 }{
-	ID:           whereHelperint64{field: "\"persons\".\"id\""},
-	CreatedAt:    whereHelpernull_Time{field: "\"persons\".\"createdAt\""},
-	UpdatedAt:    whereHelpernull_Time{field: "\"persons\".\"updatedAt\""},
+	ID:           whereHelpernull_String{field: "\"persons\".\"id\""},
+	CreatedAt:    whereHelpernull_String{field: "\"persons\".\"createdAt\""},
+	UpdatedAt:    whereHelpernull_String{field: "\"persons\".\"updatedAt\""},
 	Firstname:    whereHelperstring{field: "\"persons\".\"firstname\""},
 	Lastname:     whereHelperstring{field: "\"persons\".\"lastname\""},
 	Birthdate:    whereHelpernull_Time{field: "\"persons\".\"birthdate\""},
@@ -656,8 +633,8 @@ func (o *Person) AddStamps(ctx context.Context, exec boil.ContextExecutor, inser
 		} else {
 			updateQuery := fmt.Sprintf(
 				"UPDATE \"stamps\" SET %s WHERE %s",
-				strmangle.SetParamNames("\"", "\"", 1, []string{"person_id"}),
-				strmangle.WhereClause("\"", "\"", 2, stampPrimaryKeyColumns),
+				strmangle.SetParamNames("\"", "\"", 0, []string{"person_id"}),
+				strmangle.WhereClause("\"", "\"", 0, stampPrimaryKeyColumns),
 			)
 			values := []interface{}{o.ID, rel.ID}
 
@@ -701,7 +678,7 @@ func (o *Person) AddStamps(ctx context.Context, exec boil.ContextExecutor, inser
 // Replaces o.R.Stamps with related.
 // Sets related.R.Person's Stamps accordingly.
 func (o *Person) SetStamps(ctx context.Context, exec boil.ContextExecutor, insert bool, related ...*Stamp) error {
-	query := "update \"stamps\" set \"person_id\" = null where \"person_id\" = $1"
+	query := "update \"stamps\" set \"person_id\" = null where \"person_id\" = ?"
 	values := []interface{}{o.ID}
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -781,7 +758,7 @@ func Persons(mods ...qm.QueryMod) personQuery {
 
 // FindPerson retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindPerson(ctx context.Context, exec boil.ContextExecutor, iD int64, selectCols ...string) (*Person, error) {
+func FindPerson(ctx context.Context, exec boil.ContextExecutor, iD null.String, selectCols ...string) (*Person, error) {
 	personObj := &Person{}
 
 	sel := "*"
@@ -789,7 +766,7 @@ func FindPerson(ctx context.Context, exec boil.ContextExecutor, iD int64, select
 		sel = strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, selectCols), ",")
 	}
 	query := fmt.Sprintf(
-		"select %s from \"persons\" where \"id\"=$1", sel,
+		"select %s from \"persons\" where \"id\"=?", sel,
 	)
 
 	q := queries.Raw(query, iD)
@@ -931,8 +908,8 @@ func (o *Person) Update(ctx context.Context, exec boil.ContextExecutor, columns 
 		}
 
 		cache.query = fmt.Sprintf("UPDATE \"persons\" SET %s WHERE %s",
-			strmangle.SetParamNames("\"", "\"", 1, wl),
-			strmangle.WhereClause("\"", "\"", len(wl)+1, personPrimaryKeyColumns),
+			strmangle.SetParamNames("\"", "\"", 0, wl),
+			strmangle.WhereClause("\"", "\"", 0, personPrimaryKeyColumns),
 		)
 		cache.valueMapping, err = queries.BindMapping(personType, personMapping, append(wl, personPrimaryKeyColumns...))
 		if err != nil {
@@ -1012,8 +989,8 @@ func (o PersonSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, c
 	}
 
 	sql := fmt.Sprintf("UPDATE \"persons\" SET %s WHERE %s",
-		strmangle.SetParamNames("\"", "\"", 1, colNames),
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), len(colNames)+1, personPrimaryKeyColumns, len(o)))
+		strmangle.SetParamNames("\"", "\"", 0, colNames),
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, personPrimaryKeyColumns, len(o)))
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1094,7 +1071,6 @@ func (o *Person) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOn
 			personColumnsWithoutDefault,
 			nzDefaults,
 		)
-
 		update := updateColumns.UpdateColumnSet(
 			personAllColumns,
 			personPrimaryKeyColumns,
@@ -1109,7 +1085,7 @@ func (o *Person) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOn
 			conflict = make([]string, len(personPrimaryKeyColumns))
 			copy(conflict, personPrimaryKeyColumns)
 		}
-		cache.query = buildUpsertQueryPostgres(dialect, "\"persons\"", updateOnConflict, ret, update, conflict, insert)
+		cache.query = buildUpsertQuerySQLite(dialect, "\"persons\"", updateOnConflict, ret, update, conflict, insert)
 
 		cache.valueMapping, err = queries.BindMapping(personType, personMapping, insert)
 		if err != nil {
@@ -1168,7 +1144,7 @@ func (o *Person) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, 
 	}
 
 	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), personPrimaryKeyMapping)
-	sql := "DELETE FROM \"persons\" WHERE \"id\"=$1"
+	sql := "DELETE FROM \"persons\" WHERE \"id\"=?"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1234,7 +1210,7 @@ func (o PersonSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (
 	}
 
 	sql := "DELETE FROM \"persons\" WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, personPrimaryKeyColumns, len(o))
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, personPrimaryKeyColumns, len(o))
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1289,7 +1265,7 @@ func (o *PersonSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) 
 	}
 
 	sql := "SELECT \"persons\".* FROM \"persons\" WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, personPrimaryKeyColumns, len(*o))
+		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 0, personPrimaryKeyColumns, len(*o))
 
 	q := queries.Raw(sql, args...)
 
@@ -1304,9 +1280,9 @@ func (o *PersonSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) 
 }
 
 // PersonExists checks if the Person row exists.
-func PersonExists(ctx context.Context, exec boil.ContextExecutor, iD int64) (bool, error) {
+func PersonExists(ctx context.Context, exec boil.ContextExecutor, iD null.String) (bool, error) {
 	var exists bool
-	sql := "select exists(select 1 from \"persons\" where \"id\"=$1 limit 1)"
+	sql := "select exists(select 1 from \"persons\" where \"id\"=? limit 1)"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)

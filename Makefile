@@ -4,8 +4,8 @@ SHELL:=/bin/zsh
 PROJECT_NAME := "CheckInBoardServer"
 BINARY_NAME := main
 
-# "development" for sqlite, "production" for postgres
-SQL_MIGRATE_ENV := "development"
+# sqlite, mysql, postgres
+SQL_MIGRATE_DB := "mysql"
 
 PKG := "github.com/michzuerch/$(PROJECT_NAME)"
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
@@ -82,13 +82,21 @@ docker-clean: ## Stop the running docker container and remove the container
 
 ##@ Database
 
-database-start: ## Start postgres with docker-compose
-	$(info Start the database)
-	docker-compose -p postgres -f ./Database/docker-compose.yml up -d
+database-postgres-start: ## Start postgres with docker-compose
+	$(info Start the postgres database)
+	docker-compose -p postgres -f ./Database/docker-compose-Postgres.yml up -d
 
-database-stop: ## Stop postgres with docker-compose
-	$(info Stop the database)
-	docker-compose -p postgres -f ./Database/docker-compose.yml down
+database-postgres-stop: ## Stop postgres with docker-compose
+	$(info Stop the postgres database)
+	docker-compose -p postgres -f ./Database/docker-compose-Postgres.yml down
+
+database-mysql-start: ## Start mysql with docker-compose
+	$(info Start the mysql database)
+	docker-compose -p mysql -f ./Database/docker-compose-Mysql.yml up -d
+
+database-mysql-stop: ## Stop mysql with docker-compose
+	$(info Stop the mysql database)
+	docker-compose -p mysql -f ./Database/docker-compose-Mysql.yml down
 
 ##@ sql-migrate
 
@@ -98,11 +106,15 @@ install-sql-migrate: ## Install sql-migrate
 
 sql-migrate-up: ## sql-migrate up
 	$(info sql-migrate up)
-	sql-migrate up -env=${SQL_MIGRATE_ENV}
+	sql-migrate up -env=${SQL_MIGRATE_DB}
 
 sql-migrate-down: ## sql-migrate down
 	$(info sql-migrate down)
-	sql-migrate down -env=${SQL_MIGRATE_ENV}
+	sql-migrate down -env=${SQL_MIGRATE_DB}
+
+database-test-sqlite: ## Test the migration status
+	$(info Test the migration status)
+	sqlite3 CheckInBoard-testing.db "SELECT COUNT(*) FROM migrations"
 
 ##@ Cleanup
 
