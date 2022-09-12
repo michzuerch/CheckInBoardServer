@@ -5,7 +5,7 @@ PROJECT_NAME := "CheckInBoardServer"
 BINARY_NAME := main
 
 # sqlite, mysql, postgres
-SQL_MIGRATE_DB := "mysql"
+SQL_MIGRATE_DB := "postgres"
 
 PKG := "github.com/michzuerch/$(PROJECT_NAME)"
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
