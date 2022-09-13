@@ -4,8 +4,8 @@ SHELL:=/bin/zsh
 PROJECT_NAME := "CheckInBoardServer"
 BINARY_NAME := main
 
-# sqlite3, mysql, psql
-SQL_MIGRATE_DB := "psql"
+# sqlite3, mysql, psql, mssql
+SQL_MIGRATE_DB := "sqlite3"
 
 PKG := "github.com/michzuerch/$(PROJECT_NAME)"
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
@@ -97,6 +97,14 @@ database-mysql-start: ## Start mysql with docker-compose
 database-mysql-stop: ## Stop mysql with docker-compose
 	$(info Stop the mysql database)
 	docker-compose -p mysql -f ./Database/docker-compose-Mysql.yml down
+
+database-mssql-start: ## Start mssql with docker-compose
+	$(info Start the mssql database)
+	docker-compose -p mssql -f ./Database/docker-compose-Mssqlserver.yml up -d
+
+database-mssql-stop: ## Stop mssql with docker-compose
+	$(info Stop the mssql database)
+	docker-compose -p mssql -f ./Database/docker-compose-Mssqlserver.yml down
 
 ##@ sql-migrate
 

@@ -1,7 +1,5 @@
 version: '3.3'
 
-volumes:
-  checkinboard-db:
 services:
   database:
     image: 'postgres:14-alpine'
@@ -18,3 +16,6 @@ services:
         #- ${HTTP_PORT}:${HTTP_PORT}
         #env_file:
         #- .env
+
+volumes:
+  checkinboard-db:

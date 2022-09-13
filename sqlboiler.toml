@@ -23,8 +23,16 @@ port = 3306
 user = "michzuerch"
 pass = "lx0lc33a"
 sslmode = "false"
-blacklist = ["migrations"]
 
 [sqlite3]
 dbname = "checkinboard-testing.db"
 blacklist = ["migrations"]
+
+[mssql]
+dbname = "checkinboard"
+host = "localhost"
+port = 1433
+user = "michzuerch"
+pass = "lx0lc33a"
+sslmode = "disable"
+schema = "notdbo"

@@ -506,7 +506,7 @@ func testStampToOnePersonUsingPerson(t *testing.T) {
 	if err := randomize.Struct(seed, &local, stampDBTypes, true, stampColumnsWithDefault...); err != nil {
 		t.Errorf("Unable to randomize Stamp struct: %s", err)
 	}
-	if err := randomize.Struct(seed, &foreign, personDBTypes, false, personColumnsWithDefault...); err != nil {
+	if err := randomize.Struct(seed, &foreign, personDBTypes, true, personColumnsWithDefault...); err != nil {
 		t.Errorf("Unable to randomize Person struct: %s", err)
 	}
 
@@ -728,7 +728,7 @@ func testStampsSelect(t *testing.T) {
 }
 
 var (
-	stampDBTypes = map[string]string{`ID`: `bigint`, `Createdat`: `timestamp without time zone`, `Updatedat`: `timestamp without time zone`, `PersonID`: `bigint`, `Checkin`: `boolean`, `Stamp`: `timestamp without time zone`}
+	stampDBTypes = map[string]string{`ID`: `BIGSERIAL`, `CreatedAt`: `TIMESTAMP`, `UpdatedAt`: `TIMESTAMP`, `PersonID`: `BIGINT`, `Checkin`: `BOOLEAN`, `Stamp`: `TIMESTAMP`}
 	_            = bytes.MinRead
 )
 
@@ -845,7 +845,6 @@ func testStampsSliceUpdateAll(t *testing.T) {
 
 func testStampsUpsert(t *testing.T) {
 	t.Parallel()
-
 	if len(stampAllColumns) == len(stampPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
