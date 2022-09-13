@@ -4,7 +4,7 @@ sqlite3:
   dir: migrations/sqlite
   table: migrations
 
-postgres:
+psql:
   dialect: postgres
   datasource: dbname=checkinboard user=michzuerch password=lx0lc33a sslmode=disable
   dir: migrations/postgres
