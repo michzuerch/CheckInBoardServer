@@ -112,6 +112,10 @@ sql-migrate-down: ## sql-migrate down
 	$(info sql-migrate down)
 	sql-migrate down -env=${SQL_MIGRATE_DB}
 
+sqlboiler: ## sqlboiler
+	$(info sqlboiler)
+	sqlboiler ${SQL_MIGRATE_DB}
+
 database-test-sqlite: ## Test the migration status
 	$(info Test the migration status)
 	sqlite3 CheckInBoard-testing.db "SELECT COUNT(*) FROM migrations"

@@ -1,7 +1,5 @@
 package main
 
-//go:generate sqlboiler sqlite3 --wipe
-
 import (
 	"fmt"
 	"log"
