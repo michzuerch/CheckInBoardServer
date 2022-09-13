@@ -6,7 +6,7 @@ no-tests = false
 created = "createdAt"
 updated = "updatedAt"
 
-[postgres]
+[psql]
 dbname = "checkinboard"
 host = "localhost"
 port = 5432

@@ -4,8 +4,8 @@ SHELL:=/bin/zsh
 PROJECT_NAME := "CheckInBoardServer"
 BINARY_NAME := main
 
-# sqlite, mysql, postgres
-SQL_MIGRATE_DB := "postgres"
+# sqlite3, mysql, psql
+SQL_MIGRATE_DB := "psql"
 
 PKG := "github.com/michzuerch/$(PROJECT_NAME)"
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
