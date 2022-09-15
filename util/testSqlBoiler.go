@@ -27,6 +27,13 @@ func TestSqlBoiler() {
 	dieIf(err)
 
 	fmt.Println("Person id:", u.ID)
+
+	got, err := models.Persons().One(context.Background(), db)
+
+	dieIf(err)
+
+	fmt.Printf("Got user id: %v, Firstname: %v\n", got.ID, got.Firstname)
+
 }
 
 func dieIf(err error) {
