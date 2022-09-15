@@ -6,18 +6,17 @@ import (
 	"net/http"
 	"os"
 
-	//"github.com/michzuerch/CheckInBoardServer/util"
-	_ "github.com/mattn/go-sqlite3"
-	"github.com/michzuerch/CheckInBoardServer/config"
-	"github.com/michzuerch/CheckInBoardServer/hello"
-
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	_ "github.com/mattn/go-sqlite3"
+	"github.com/michzuerch/CheckInBoardServer/config"
+	"github.com/michzuerch/CheckInBoardServer/hello"
+	"github.com/michzuerch/CheckInBoardServer/util"
 )
 
 func main() {
-	//util.CheckDatabaseAccess()
+	util.TestSqlBoiler()
 	fmt.Println(hello.Greet())
 	fmt.Printf("Test String len: %d\n", config.StringLength("Hello"))
 	err := godotenv.Load(".env")

@@ -126,7 +126,7 @@ sqlboiler: ## sqlboiler
 
 database-test-sqlite: ## Test the migration status
 	$(info Test the migration status)
-	sqlite3 CheckInBoard-testing.db "SELECT COUNT(*) FROM migrations"
+	sqlite3 /home/michzuerch/Source/CheckInBoardServer/checkinboard-testing.db "SELECT COUNT(*) FROM migrations"
 
 ##@ Cleanup
 
