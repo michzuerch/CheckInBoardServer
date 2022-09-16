@@ -5,7 +5,7 @@ PROJECT_NAME := "CheckInBoardServer"
 BINARY_NAME := main
 
 # sqlite3, mysql, psql, mssql
-SQL_MIGRATE_DB := "sqlite3"
+# SQL_MIGRATE_DB := "sqlite3"
 
 PKG := "github.com/michzuerch/$(PROJECT_NAME)"
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
@@ -17,6 +17,8 @@ ifneq (,$(wildcard ./.env))
     include .env
     export
 endif
+
+
 
 help:  ## Display this help
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
@@ -114,19 +116,19 @@ install-sql-migrate: ## Install sql-migrate
 
 sql-migrate-up: ## sql-migrate up
 	$(info sql-migrate up)
-	sql-migrate up -env=${SQL_MIGRATE_DB}
+	sql-migrate up -env=${DB_TYPE}
 
 sql-migrate-down: ## sql-migrate down
 	$(info sql-migrate down)
-	sql-migrate down -env=${SQL_MIGRATE_DB}
+	sql-migrate down -env=${DB_TYPE}
 
 sqlboiler: ## sqlboiler
 	$(info sqlboiler)
-	sqlboiler ${SQL_MIGRATE_DB}
+	sqlboiler ${DB_TYPE}
 
 database-test-sqlite: ## Test the migration status
 	$(info Test the migration status)
-	sqlite3 /home/michzuerch/Source/CheckInBoardServer/checkinboard-testing.db "SELECT COUNT(*) FROM migrations"
+	sqlite3 ${DB_CONNECT_STRING} "SELECT COUNT(*) FROM migrations"
 
 ##@ Cleanup
 
