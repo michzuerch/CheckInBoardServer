@@ -7,12 +7,13 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/michzuerch/CheckInBoardServer/config"
 	"github.com/michzuerch/CheckInBoardServer/hello"
 	"github.com/michzuerch/CheckInBoardServer/util"
+
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 )
 
 func main() {
@@ -24,25 +25,22 @@ func main() {
 		log.Fatalf("Some error occured. Err: %s", err)
 	}
 
-	e := echo.New()
-
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
-
-	fmt.Println("Shell:", os.Getenv("SHELL"))
-
-	e.GET("/", func(c echo.Context) error {
-		return c.HTML(http.StatusOK, "Hello, Docker! <3")
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("welcome"))
 	})
 
-	e.GET("/ping", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, struct{ Status string }{Status: "OK"})
+	r.Get("/ping", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("ping"))
 	})
 
 	var httpPort string = os.Getenv("HTTP_PORT")
 	if httpPort == "" {
 		httpPort = "8080"
 	}
+	http.ListenAndServe(httpPort, r)
 
-	e.Logger.Fatal(e.Start(":" + httpPort))
+	fmt.Println("Test get shell from os.Getenv():", os.Getenv("SHELL"))
+
 }
