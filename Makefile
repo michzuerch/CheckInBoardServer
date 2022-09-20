@@ -44,9 +44,10 @@ vet: ## go vet
 	$(info Report likely misstaken packages)
 	go vet ${PKG_LIST}
 
-build: ## go generate, go build
-	$(info go generate, go build)
-	go generate
+build: ## go mod download, go build
+	$(info go mod download, go build)
+	go mod tidy
+	go mod vendor
 	go build -o ${BINARY_NAME}
 
 run: ## Run the application on local machine
@@ -78,9 +79,13 @@ docker-run: ## Run the application as docker container
 	docker run --publish ${HTTP_PORT}:${HTTP_PORT} --name checkinboard-server checkinboard-server
 
 docker-clean: ## Stop the running docker container and remove the container
-	$(info docker Stop, docker container rm)
+	$(info docker stop, docker container rm)
 	docker stop checkinboard-server
 	docker container rm checkinboard-server
+
+docker-shell: ## Connet to shell inside docker container
+	$(info Shell inside docker container)
+	docker run -it --name checkinboard-server checkinboard-server bash
 
 ##@ Database
 

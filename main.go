@@ -18,6 +18,7 @@ import (
 
 func main() {
 	util.TestSqlBoiler()
+	log.Println("Message from log")
 	fmt.Println(hello.Greet())
 	fmt.Printf("Test String len: %d\n", config.StringLength("Hello"))
 	err := godotenv.Load(".env")

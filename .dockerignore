@@ -1,6 +1,9 @@
-*
-!go.mod
-!go.sum
-!*.go
-!sql-migrate/*.go
-!sqlparse/*.go
+Database/
+.git/
+.github/
+dist/
+Dockerfile
+Makefile
+README.md
+checkinboard-testing.Database
+.air.toml
