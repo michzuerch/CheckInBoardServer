@@ -46,6 +46,7 @@ vet: ## go vet
 
 build: ## go mod download, go build
 	$(info go mod download, go build)
+	go get -u
 	go mod tidy
 	go mod vendor
 	go build -o ${BINARY_NAME}
@@ -53,6 +54,10 @@ build: ## go mod download, go build
 run: ## Run the application on local machine
 	$(info Run main on local machine)
 	./${BINARY_NAME}
+
+release: ## goreleaser
+	$(info goreleaser)
+	goreleaser release --snapshot --rm-dist
 
 ##@ Testing
 
@@ -68,8 +73,10 @@ test-coverage: ## Test coverage
 
 docker-build: ## Build the docker image
 	$(info Build the docker image)
-	@echo "Start build docker image..."
-	docker build --no-cache --tag checkinboard-server .
+	@echo "Start build docker image, Builddate: " $(date +'%Y-%m-%d')
+	@echo $(date +'%Y-%m-%d')
+
+	docker build --no-cache --tag checkinboard-server --build-arg buildDate=$(date +'%Y-%m-%d') .
 	docker image tag checkinboard-server:latest checkinboard-server:v1.0
 	@echo "Docker images is ready."
 

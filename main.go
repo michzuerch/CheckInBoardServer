@@ -8,7 +8,6 @@ import (
 
 	"github.com/joho/godotenv"
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/michzuerch/CheckInBoardServer/config"
 	"github.com/michzuerch/CheckInBoardServer/hello"
 	"github.com/michzuerch/CheckInBoardServer/util"
 
@@ -17,10 +16,9 @@ import (
 )
 
 func main() {
+	fmt.Println("Test get shell from os.Getenv():", os.Getenv("SHELL"))
 	util.TestSqlBoiler()
-	log.Println("Message from log")
 	fmt.Println(hello.Greet())
-	fmt.Printf("Test String len: %d\n", config.StringLength("Hello"))
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatalf("Some error occured. Err: %s", err)
@@ -41,7 +39,5 @@ func main() {
 		httpPort = "8080"
 	}
 	http.ListenAndServe(httpPort, r)
-
-	fmt.Println("Test get shell from os.Getenv():", os.Getenv("SHELL"))
 
 }

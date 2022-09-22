@@ -3,16 +3,18 @@
 before:
   hooks:
     # You may remove this if you don't use go modules.
+    - go get -u
     - go mod tidy
+    - go mod vendor
     # you may remove this if you don't need go generate
-    - go generate ./...
+    # - go generate ./...
 builds:
   - env:
       - CGO_ENABLED=0
     goos:
       - linux
-        #- windows
-        #- darwin
+      #- windows
+      - darwin
 archives:
   - replacements:
       darwin: Darwin
