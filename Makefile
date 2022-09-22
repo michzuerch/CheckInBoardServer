@@ -10,6 +10,7 @@ BINARY_NAME := main
 PKG := "github.com/michzuerch/$(PROJECT_NAME)"
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
 GO_FILES := $(shell find . -name '*.go' | grep -v /vendor/ | grep -v _test.go)
+BUILD_DATE := $(shell date +'%Y-%m-%d')
 
 .PHONY: all dep lint vet test test-coverage build clean
 
@@ -73,10 +74,8 @@ test-coverage: ## Test coverage
 
 docker-build: ## Build the docker image
 	$(info Build the docker image)
-	@echo "Start build docker image, Builddate: " $(date +'%Y-%m-%d')
-	@echo $(date +'%Y-%m-%d')
-
-	docker build --no-cache --tag checkinboard-server --build-arg buildDate=$(date +'%Y-%m-%d') .
+	@echo "Start build docker image..."
+	docker build --no-cache --tag checkinboard-server --build-arg buildDate=$(BUILD_DATE) .
 	docker image tag checkinboard-server:latest checkinboard-server:v1.0
 	@echo "Docker images is ready."
 
