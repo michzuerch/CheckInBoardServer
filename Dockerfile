@@ -1,4 +1,6 @@
 FROM golang:alpine as builder
+ENV CGO_ENABLED=1
+RUN apk add --no-cache gcc musl-dev
 RUN mkdir /build 
 WORKDIR /build
 COPY / ./
@@ -21,4 +23,4 @@ COPY --from=builder /build/main /app/
 COPY .env /app/
 RUN ls -la /app
 WORKDIR /app
-CMD ["./main"]
+CMD ["./app/main"]
