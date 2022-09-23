@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	// justify for linter ??
 	_ "github.com/lib/pq"
 )
 

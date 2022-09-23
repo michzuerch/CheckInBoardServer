@@ -7,8 +7,8 @@ RUN ls -la
 #RUN go get -u
 #RUN go mod tidy
 RUN go mod vendor 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main .
-#RUN ls -la
+#RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main .
+RUN go build -v -o main .
 #FROM scratch
 FROM ubuntu
 ARG buildDate

@@ -8,15 +8,17 @@ import (
 
 	"github.com/michzuerch/CheckInBoardServer/models"
 	"github.com/volatiletech/sqlboiler/v4/boil"
+
+	// justify for linter??
 	_ "modernc.org/sqlite"
 )
 
-func TestSqlBoiler() {
-	env_db_type := os.Getenv("DB_TYPE")
-	env_db_connect_string := os.Getenv("DB_CONNECT_STRING")
+func TestSQLBoiler() {
+	envDBType := os.Getenv("DB_TYPE")
+	envDBConnection := os.Getenv("DB_CONNECTION")
 
-	fmt.Printf("Databasebase Type and connect string from env: '%v', '%v' \n", env_db_type, env_db_connect_string)
-	db, err := sql.Open(env_db_type, env_db_connect_string)
+	fmt.Printf("Databasebase Type and connect string from env: '%v', '%v' \n", envDBType, envDBConnection)
+	db, err := sql.Open(envDBType, envDBConnection)
 
 	dieIf(err)
 
@@ -25,7 +27,7 @@ func TestSqlBoiler() {
 
 	fmt.Println("Database connected")
 
-	//Create person
+	// Create person
 	p := &models.Person{
 		Firstname: "Benny",
 		Lastname:  "Hill",
@@ -37,8 +39,8 @@ func TestSqlBoiler() {
 
 	fmt.Printf("Created person: %v \n", p)
 
-	//Find person
-	//person, err := models.FindPerson()
+	// Find person
+	// person, err := models.FindPerson()
 
 	u := &models.Person{Firstname: "django"}
 
@@ -54,8 +56,10 @@ func TestSqlBoiler() {
 
 	fmt.Printf("Got user id: %v, Firstname: %v\n", got.ID, got.Firstname)
 
-	//foundAgain, err := models.Persons(qm.Where("firstname = ?", got.Name)).One()
-
+	// foundAgain, err := models.Persons(qm.Where("firstname = ?", got.Name)).One()
+	if err != nil {
+		return
+	}
 }
 
 func dieIf(err error) {

@@ -31,11 +31,14 @@ all: build ## Build all
 
 dep: ## Downloag go dependencies
 	$(info Checking and getting dependencies)
+	go get -u
+	go mod tidy
 	go mod download
+	go mod vendor
 
 lint: ## Linting
 	$(info Linting with golangci-list)
-	golangci-lint run --enable-all
+	golangci-lint run 
 
 install-golangci-lint: ## Install golangci-lint
 	$(info Install golangci-lint)
@@ -46,10 +49,7 @@ vet: ## go vet
 	go vet ${PKG_LIST}
 
 build: ## go mod download, go build
-	$(info go mod download, go build)
-	go get -u
-	go mod tidy
-	go mod vendor
+	$(info go build)
 	go build -o ${BINARY_NAME}
 
 run: ## Run the application on local machine
@@ -75,7 +75,7 @@ test-coverage: ## Test coverage
 docker-build: ## Build the docker image
 	$(info Build the docker image)
 	@echo "Start build docker image..."
-	docker build --no-cache --tag checkinboard-server --build-arg buildDate=$(BUILD_DATE) .
+	docker build --tag checkinboard-server --build-arg buildDate=$(BUILD_DATE) .
 	docker image tag checkinboard-server:latest checkinboard-server:v1.0
 	@echo "Docker images is ready."
 

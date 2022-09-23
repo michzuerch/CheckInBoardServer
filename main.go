@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
-	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/michzuerch/CheckInBoardServer/hello"
 	"github.com/michzuerch/CheckInBoardServer/util"
@@ -16,13 +15,10 @@ import (
 )
 
 func main() {
-	fmt.Println("Test get shell from os.Getenv():", os.Getenv("SHELL"))
-	util.TestSqlBoiler()
+	fmt.Println("Test get shell from os.Getenv(), HOSTNAME:", os.Getenv("HOSTNAME"))
+	fmt.Println("Test get shell from os.Getenv(), TEST:", os.Getenv("TEST"))
+	util.TestSQLBoiler()
 	fmt.Println(hello.Greet())
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatalf("Some error occured. Err: %s", err)
-	}
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
@@ -39,5 +35,4 @@ func main() {
 		httpPort = "8080"
 	}
 	http.ListenAndServe(httpPort, r)
-
 }
