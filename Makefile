@@ -2,7 +2,7 @@
 SHELL:=/bin/zsh
 
 PROJECT_NAME := "CheckInBoardServer"
-BINARY_NAME := main
+BINARY_NAME := checkinboard-server
 
 # sqlite3, mysql, psql, mssql
 # SQL_MIGRATE_DB := "sqlite3"
@@ -86,10 +86,10 @@ docker-run: ## Run the application as docker container
 
 docker-clean: ## Stop the running docker container and remove the container
 	$(info docker stop, docker container rm)
-	docker stop checkinboard-server
-	docker container rm checkinboard-server
+	@-docker stop checkinboard-server
+	@-docker container rm checkinboard-server
 
-docker-shell: ## Connet to shell inside docker container
+docker-shell: docker-clean ## Connet to shell inside docker container
 	$(info Shell inside docker container)
 	docker run -it --name checkinboard-server checkinboard-server bash
 
