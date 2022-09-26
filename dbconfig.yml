@@ -1,6 +1,6 @@
 sqlite3:
   dialect: sqlite3
-  datasource: /home/michzuerch/Source/CheckInBoardServer/checkinboard-testing.db
+  datasource: checkinboard-testing.db
   dir: migrations/sqlite
   table: migrations
 

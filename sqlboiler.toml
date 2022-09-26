@@ -25,7 +25,7 @@ pass = "lx0lc33a"
 sslmode = "false"
 
 [sqlite3]
-dbname = "/home/michzuerch/Source/CheckInBoardServer/checkinboard-testing.db"
+dbname = "checkinboard-testing.db"
 blacklist = ["migrations"]
 
 [mssql]
