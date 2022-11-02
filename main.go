@@ -18,7 +18,10 @@ func main() {
 	fmt.Println("HOSTNAME os.Getenv(), HOSTNAME:", os.Getenv("HOSTNAME"))
 	// util.TestSQLBoiler()
 
-	util.TestRest()
+	// util.TestRest()
+
+	util.TestGin()
+
 	fmt.Println("TestRest() done.")
 	fmt.Println(hello.Greet())
 
