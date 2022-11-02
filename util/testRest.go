@@ -16,7 +16,7 @@ type data struct {
 }
 
 func TestRest() {
-	currencies := "EURUSD,GBPUSD"
+	currencies := "CHFEUR,EURUSD,GBPUSD"
 	api_key := "P5WqKpA4crIZSsNf8llw"
 	url := "https://marketdata.tradermade.com/api/v1/live?currency=" + currencies + "&api_key=" + api_key
 
