@@ -16,7 +16,10 @@ import (
 
 func main() {
 	fmt.Println("HOSTNAME os.Getenv(), HOSTNAME:", os.Getenv("HOSTNAME"))
-	util.TestSQLBoiler()
+	// util.TestSQLBoiler()
+
+	util.TestRest()
+	fmt.Println("TestRest() done.")
 	fmt.Println(hello.Greet())
 
 	r := chi.NewRouter()
