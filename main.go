@@ -15,8 +15,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Test get shell from os.Getenv(), HOSTNAME:", os.Getenv("HOSTNAME"))
-	fmt.Println("Test get shell from os.Getenv(), TEST:", os.Getenv("TEST"))
+	fmt.Println("HOSTNAME os.Getenv(), HOSTNAME:", os.Getenv("HOSTNAME"))
 	util.TestSQLBoiler()
 	fmt.Println(hello.Greet())
 

@@ -18,7 +18,7 @@ func TestSQLBoiler() {
 	envDBConnection := os.Getenv("DB_CONNECTION")
 
 	fmt.Printf("Databasebase Type and connect string from env: '%v', '%v' \n", envDBType, envDBConnection)
-	db, err := sql.Open(envDBType, envDBConnection)
+	db, err := sql.Open("postgres", envDBConnection)
 
 	dieIf(err)
 
