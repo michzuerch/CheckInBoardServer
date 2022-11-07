@@ -92,6 +92,11 @@ docker-clean: ## Stop the running docker container and remove the container
 docker-shell: docker-clean ## Connect to shell inside docker container of checkinboard-server
 	$(info Shell inside docker container)
 	docker run -it --name checkinboard-server checkinboard-server bash
+	docker exec -it postgres-database-1 /bin/sh
+
+docker-compose: ## Run database and backend together in docker compose
+	$(info Run database and backend)
+	docker compose -p backend -f ./Database/docker-compose.yml up -d
 
 ##@ Database
 
@@ -124,10 +129,6 @@ sql-migrate-down: ## sql-migrate down
 sqlboiler: ## sqlboiler
 	$(info sqlboiler)
 	sqlboiler psql
-
-database-test-sqlite: ## Test the migration status
-	$(info Test the migration status)
-	sqlite3 ${DB_CONNECT_STRING} "SELECT COUNT(*) FROM migrations"
 
 ##@ Cleanup
 

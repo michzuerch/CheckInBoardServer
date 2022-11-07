@@ -17,6 +17,8 @@ func CheckDatabaseAccess() {
 
 	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", envPostgresServer, 5432, envPostgresUser, envPostgresPassword, envPostgresDB)
 
+	fmt.Printf("Connection-String: %v \n", psqlconn)
+
 	// open database
 	db, err := sql.Open("postgres", psqlconn)
 	CheckError(err)
