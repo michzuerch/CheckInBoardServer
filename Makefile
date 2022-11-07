@@ -69,7 +69,7 @@ test: ## Testing
 test-coverage: ## Test coverage
 	$(info Coverage)
 	go test -short -coverprofile cover.out -covermode=atomic ${PKG_LIST}
-
+#
 ##@ Docker
 
 docker-build: ## Build the docker image
@@ -89,7 +89,7 @@ docker-clean: ## Stop the running docker container and remove the container
 	@-docker stop checkinboard-server
 	@-docker container rm checkinboard-server
 
-docker-shell: docker-clean ## Connet to shell inside docker container
+docker-shell: docker-clean ## Connect to shell inside docker container of checkinboard-server
 	$(info Shell inside docker container)
 	docker run -it --name checkinboard-server checkinboard-server bash
 
@@ -97,27 +97,31 @@ docker-shell: docker-clean ## Connet to shell inside docker container
 
 database-postgres-start: ## Start postgres with docker-compose
 	$(info Start the postgres database)
-	docker-compose -p postgres -f ./Database/docker-compose-Postgres.yml up -d
+	docker compose -p postgres -f ./Database/docker-compose-Postgres.yml up -d
 
 database-postgres-stop: ## Stop postgres with docker-compose
 	$(info Stop the postgres database)
-	docker-compose -p postgres -f ./Database/docker-compose-Postgres.yml down
+	docker compose -p postgres -f ./Database/docker-compose-Postgres.yml down
+
+database-postgres-shell: ## Stop postgres with docker-compose
+	$(info Shell to postgres database)
+	docker exec -it postgres-database-1 /bin/sh
 
 database-mysql-start: ## Start mysql with docker-compose
 	$(info Start the mysql database)
-	docker-compose -p mysql -f ./Database/docker-compose-Mysql.yml up -d
+	docker compose -p mysql -f ./Database/docker-compose-Mysql.yml up -d
 
 database-mysql-stop: ## Stop mysql with docker-compose
 	$(info Stop the mysql database)
-	docker-compose -p mysql -f ./Database/docker-compose-Mysql.yml down
+	docker compose -p mysql -f ./Database/docker-compose-Mysql.yml down
 
 database-mssql-start: ## Start mssql with docker-compose
 	$(info Start the mssql database)
-	docker-compose -p mssql -f ./Database/docker-compose-Mssqlserver.yml up -d
+	docker compose -p mssql -f ./Database/docker-compose-Mssqlserver.yml up -d
 
 database-mssql-stop: ## Stop mssql with docker-compose
 	$(info Stop the mssql database)
-	docker-compose -p mssql -f ./Database/docker-compose-Mssqlserver.yml down
+	docker compose -p mssql -f ./Database/docker-compose-Mssqlserver.yml down
 
 ##@ sql-migrate
 

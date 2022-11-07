@@ -32,5 +32,11 @@ func TestGin() {
 	router := gin.Default()
 	router.GET("/albums", getAlbums)
 
+	router.GET("/test", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"message": "test",
+		})
+	})
+
 	router.Run("localhost:8080")
 }
