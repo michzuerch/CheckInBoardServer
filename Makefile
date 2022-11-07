@@ -123,7 +123,7 @@ sql-migrate-down: ## sql-migrate down
 
 sqlboiler: ## sqlboiler
 	$(info sqlboiler)
-	sqlboiler ${DB_TYPE}
+	sqlboiler psql
 
 database-test-sqlite: ## Test the migration status
 	$(info Test the migration status)
