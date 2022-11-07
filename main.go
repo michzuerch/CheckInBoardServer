@@ -20,7 +20,9 @@ func main() {
 
 	// util.TestRest()
 
-	util.TestGin()
+	// util.TestGin()
+
+	util.CheckDatabaseAccess()
 
 	fmt.Println("TestRest() done.")
 	fmt.Println(hello.Greet())

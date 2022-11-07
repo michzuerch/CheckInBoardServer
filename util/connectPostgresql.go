@@ -3,22 +3,19 @@ package util
 import (
 	"database/sql"
 	"fmt"
+	"os"
 
 	// justify for linter ??
 	_ "github.com/lib/pq"
 )
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "michzuerch"
-	password = "lx0lc33a"
-	dbname   = "CheckInBoard"
-)
-
 func CheckDatabaseAccess() {
-	// connection string
-	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+	envPostgresServer := os.Getenv("POSTGRES_SERVER")
+	envPostgresUser := os.Getenv("POSTGRES_USER")
+	envPostgresPassword := os.Getenv("POSTGRES_PASSWORD")
+	envPostgresDB := os.Getenv("POSTGRES_DB")
+
+	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", envPostgresServer, 5432, envPostgresUser, envPostgresPassword, envPostgresDB)
 
 	// open database
 	db, err := sql.Open("postgres", psqlconn)

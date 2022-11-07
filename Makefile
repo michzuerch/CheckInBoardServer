@@ -107,22 +107,6 @@ database-postgres-shell: ## Stop postgres with docker-compose
 	$(info Shell to postgres database)
 	docker exec -it postgres-database-1 /bin/sh
 
-database-mysql-start: ## Start mysql with docker-compose
-	$(info Start the mysql database)
-	docker compose -p mysql -f ./Database/docker-compose-Mysql.yml up -d
-
-database-mysql-stop: ## Stop mysql with docker-compose
-	$(info Stop the mysql database)
-	docker compose -p mysql -f ./Database/docker-compose-Mysql.yml down
-
-database-mssql-start: ## Start mssql with docker-compose
-	$(info Start the mssql database)
-	docker compose -p mssql -f ./Database/docker-compose-Mssqlserver.yml up -d
-
-database-mssql-stop: ## Stop mssql with docker-compose
-	$(info Stop the mssql database)
-	docker compose -p mssql -f ./Database/docker-compose-Mssqlserver.yml down
-
 ##@ sql-migrate
 
 install-sql-migrate: ## Install sql-migrate
@@ -131,11 +115,11 @@ install-sql-migrate: ## Install sql-migrate
 
 sql-migrate-up: ## sql-migrate up
 	$(info sql-migrate up)
-	sql-migrate up -env=${DB_TYPE}
+	sql-migrate up -env=psql
 
 sql-migrate-down: ## sql-migrate down
 	$(info sql-migrate down)
-	sql-migrate down -env=${DB_TYPE}
+	sql-migrate down -env=psql
 
 sqlboiler: ## sqlboiler
 	$(info sqlboiler)

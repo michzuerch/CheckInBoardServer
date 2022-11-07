@@ -14,11 +14,15 @@ import (
 )
 
 func TestSQLBoiler() {
-	envDBType := os.Getenv("DB_TYPE")
-	envDBConnection := os.Getenv("DB_CONNECTION")
+	envPostgresServer := os.Getenv("POSTGRES_SERVER")
+	envPostgresUser := os.Getenv("POSTGRES_USER")
+	envPostgresPassword := os.Getenv("POSTGRES_PASSWORD")
+	envPostgresDB := os.Getenv("POSTGRES_DB")
 
-	fmt.Printf("Databasebase Type and connect string from env: '%v', '%v' \n", envDBType, envDBConnection)
-	db, err := sql.Open("postgres", envDBConnection)
+	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", envPostgresServer, 5432, envPostgresUser, envPostgresPassword, envPostgresDB)
+
+	fmt.Printf("Databasebase connection string from env: '%v' \n", psqlconn)
+	db, err := sql.Open("postgres", psqlconn)
 
 	dieIf(err)
 
