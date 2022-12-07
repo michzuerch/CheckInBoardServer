@@ -5,20 +5,20 @@ FROM golang AS build
 
 WORKDIR /app
 
-COPY go.mod ./
-COPY go.sum ./
-RUN go mod download
+COPY . ./
 
-COPY . . 
+RUN ls -la 
+#RUN make build
 
-RUN go build -o /checkinboard-server
+##RUN go build -o /checkinboard-server
+RUN make build 
 
 ## Deploy
 FROM gcr.io/distroless/base-debian10
 
-WORKDIR /
+WORKDIR /app
 
-COPY --from=build /checkinboard-server /checkinboard-server
+COPY --from=build /app/checkinboard-server /checkinboard-server
 COPY .env .env
 COPY checkinboard-testing.db .
 

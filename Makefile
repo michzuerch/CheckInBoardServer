@@ -1,11 +1,8 @@
 .DEFAULT_GOAL:=help
-SHELL:=/bin/zsh
+SHELL:=/bin/sh
 
 PROJECT_NAME := "CheckInBoardServer"
 BINARY_NAME := checkinboard-server
-
-# sqlite3, mysql, psql, mssql
-# SQL_MIGRATE_DB := "sqlite3"
 
 PKG := "github.com/michzuerch/$(PROJECT_NAME)"
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
@@ -48,7 +45,7 @@ vet: ## go vet
 	$(info Report likely misstaken packages)
 	go vet ${PKG_LIST}
 
-build: ## go mod download, go build
+build: dep ## go mod download, go build
 	$(info go build)
 	go build -o ${BINARY_NAME}
 
@@ -77,7 +74,7 @@ docker-build: ## Build the docker image
 	@echo "Start build docker image..."
 	docker build --tag checkinboard-server --build-arg buildDate=$(BUILD_DATE) .
 	docker image tag checkinboard-server:latest checkinboard-server:v1.0
-	@echo "Docker images is ready."
+	@echo "Docker image is ready."
 
 docker-run: ## Run the application as docker container
 	$(info Start a docker container with main.go)
@@ -94,7 +91,7 @@ docker-shell: docker-clean ## Connect to shell inside docker container of checki
 	docker run -it --name checkinboard-server checkinboard-server bash
 	docker exec -it postgres-database-1 /bin/sh
 
-docker-compose: ## Run database and backend together in docker compose
+docker-compose: docker-clean ## Run database and backend together in docker compose
 	$(info Run database and backend)
 	docker compose -p backend -f ./Database/docker-compose.yml up -d
 
